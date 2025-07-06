@@ -1,4 +1,4 @@
-FROM node:18-alpine as build
+FROM node:18-alpine AS builder
 
 WORKDIR /app
 
@@ -10,11 +10,11 @@ COPY . .
 
 RUN npm run build
 
-FROM nginx:alpine
-
-COPY --from=build /app/dist /usr/share/nginx/html
+FROM nginx:alpine AS production
 
 COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+COPY --from=builder /app/dist /usr/share/nginx/html
 
 EXPOSE 3000
 

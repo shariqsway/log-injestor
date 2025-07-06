@@ -1,16 +1,28 @@
-FROM node:18-alpine
+FROM node:18-alpine AS builder
 
 WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm ci --only=production
+RUN npm ci
 
 COPY . .
 
 RUN npm run build
 
-RUN mkdir -p /app/data && chmod 755 /app/data
+FROM node:18-alpine AS production
+
+RUN apk add --no-cache wget
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm ci --only=production && npm cache clean --force
+
+COPY --from=builder /app/dist ./dist
+
+COPY --from=builder /app/data ./data
 
 RUN addgroup -g 1001 -S nodejs && \
     adduser -S nodejs -u 1001
@@ -21,7 +33,7 @@ USER nodejs
 
 EXPOSE 3001
 
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:3001/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) }).on('error', () => process.exit(1))"
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+  CMD wget --no-verbose --tries=1 --spider http://localhost:3001/health || exit 1
 
-CMD ["npm", "start"]
+CMD ["node", "dist/server.js"]
