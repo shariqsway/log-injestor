@@ -1,0 +1,107 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary-50: #eff6ff;
+  --color-primary-500: #3b82f6;
+  --color-primary-600: #2563eb;
+  --color-primary-700: #1d4ed8;
+
+  --color-red-50: #fef2f2;
+  --color-red-500: #ef4444;
+  --color-red-800: #991b1b;
+
+  --color-yellow-50: #fffbeb;
+  --color-yellow-500: #f59e0b;
+  --color-yellow-800: #92400e;
+
+  --color-blue-50: #eff6ff;
+  --color-blue-500: #3b82f6;
+  --color-blue-800: #1e40af;
+
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f3f4f6;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #111827;
+}
+
+/* Custom component styles */
+@layer components {
+  .log-entry-error {
+    @apply border-l-4 border-red-500 bg-red-50;
+  }
+
+  .log-entry-warn {
+    @apply border-l-4 border-yellow-500 bg-yellow-50;
+  }
+
+  .log-entry-info {
+    @apply border-l-4 border-blue-500 bg-blue-50;
+  }
+
+  .log-entry-debug {
+    @apply border-l-4 border-gray-500 bg-gray-50;
+  }
+
+  .badge-error {
+    @apply bg-red-100 text-red-800;
+  }
+
+  .badge-warn {
+    @apply bg-yellow-100 text-yellow-800;
+  }
+
+  .badge-info {
+    @apply bg-blue-100 text-blue-800;
+  }
+
+  .badge-debug {
+    @apply bg-gray-100 text-gray-800;
+  }
+}
+
+/* Custom scrollbar for webkit browsers */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Custom styles for datetime inputs */
+input[type="datetime-local"] {
+  -webkit-appearance: none;
+  -moz-appearance: textfield;
+}
+
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  background: transparent;
+  bottom: 0;
+  color: transparent;
+  cursor: pointer;
+  height: auto;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: auto;
+}
+
+button:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
